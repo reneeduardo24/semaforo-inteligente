@@ -1,0 +1,17 @@
+{
+  "name": "backend-semaforo",
+  "version": "1.0.0",
+  "description": "Backend del sistema de semaforos inteligentes: API REST, cliente CoAP, Socket.IO, calidad de datos y alarmas",
+  "private": true,
+  "main": "servidor.js",
+  "scripts": {
+    "start": "node servidor.js"
+  },
+  "dependencies": {
+    "coap": "^1.4.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "mongodb": "^6.12.0",
+    "socket.io": "^4.8.1"
+  }
+}

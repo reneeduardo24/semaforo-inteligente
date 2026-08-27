@@ -1,0 +1,78 @@
+<h4 class="mb-3">Configuracion</h4>
+
+<div class="row g-3">
+  @for (configuracion of configuraciones; track configuracion.semaforoId) {
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ configuracion.semaforoId }}</h5>
+
+          <div class="row g-2 mb-2">
+            <div class="col-6">
+              <label class="form-label" for="amarillo-{{ configuracion.semaforoId }}">Duracion del amarillo (s nominales)</label>
+              <input id="amarillo-{{ configuracion.semaforoId }}" type="number" min="1" class="form-control" [(ngModel)]="configuracion.duracionAmarilloSeg">
+            </div>
+            <div class="col-6">
+              <label class="form-label" for="factor-{{ configuracion.semaforoId }}">Factor de tiempo</label>
+              <input id="factor-{{ configuracion.semaforoId }}" type="number" min="1" class="form-control" [(ngModel)]="configuracion.factorTiempo">
+            </div>
+          </div>
+
+          <div class="row g-2 mb-2">
+            <div class="col-6">
+              <label class="form-label" for="velocidad-{{ configuracion.semaforoId }}">Velocidad de sincronizacion (km/h)</label>
+              <input id="velocidad-{{ configuracion.semaforoId }}" type="number" min="1" class="form-control" [(ngModel)]="configuracion.velocidadKmh">
+            </div>
+            <div class="col-6">
+              <label class="form-label" for="distancia-{{ configuracion.semaforoId }}">Distancia entre semaforos (m)</label>
+              <input id="distancia-{{ configuracion.semaforoId }}" type="number" min="1" class="form-control" [(ngModel)]="configuracion.distanciaM">
+            </div>
+          </div>
+
+          <label class="form-label">Umbrales de nivel (vehiculos por minuto)</label>
+          <div class="row g-2 mb-2">
+            <div class="col-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">poco hasta</span>
+                <input type="number" min="1" class="form-control" [(ngModel)]="configuracion.umbrales.pocoMax">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">normal hasta</span>
+                <input type="number" min="2" class="form-control" [(ngModel)]="configuracion.umbrales.normalMax">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text">mucho hasta</span>
+                <input type="number" min="3" class="form-control" [(ngModel)]="configuracion.umbrales.muchoMax">
+              </div>
+            </div>
+          </div>
+          <small class="text-muted d-block mb-2">Con 0 vehiculos el nivel es nulo; arriba del ultimo umbral es congestionamiento.</small>
+
+          <div class="form-check form-switch mb-3">
+            <input class="form-check-input" type="checkbox" role="switch" id="sincronizacion-{{ configuracion.semaforoId }}"
+              [(ngModel)]="configuracion.sincronizacionActiva">
+            <label class="form-check-label" for="sincronizacion-{{ configuracion.semaforoId }}">
+              Sincronizacion de ola verde activa (aplica al semaforo que sigue al maestro)
+            </label>
+          </div>
+
+          <button class="btn btn-primary" [disabled]="guardando[configuracion.semaforoId]" (click)="guardar(configuracion)">Guardar</button>
+          @if (mensajes[configuracion.semaforoId]) {
+            <div class="alert alert-light border py-2 mt-3 mb-0" role="status">{{ mensajes[configuracion.semaforoId] }}</div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<p class="text-muted mt-3">
+  Los tiempos se expresan en segundos, de acuerdo con el tiempo establecido para la tarea; el dispositivo los divide
+  entre el factor de tiempo para que la demo avance rapido. Por ejemplo, con factor 10,
+  un verde de 180 s dura 18 s reales. La ola verde usa la velocidad, la distancia y el
+  interruptor de sincronizacion del semaforo esclavo (semaforo2).
+</p>

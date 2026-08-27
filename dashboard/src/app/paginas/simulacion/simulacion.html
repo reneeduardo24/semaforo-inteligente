@@ -1,0 +1,37 @@
+<h4 class="mb-3">Simulacion de la avenida</h4>
+
+<div class="card">
+  <div class="card-body">
+    <svg viewBox="0 0 1000 250" class="w-100" role="img" aria-label="Simulacion de la avenida con dos semaforos">
+      <!-- avenida horizontal y calles transversales -->
+      <rect x="0" y="140" width="1000" height="70" fill="#495057"></rect>
+      <rect x="310" y="0" width="60" height="250" fill="#495057"></rect>
+      <rect x="710" y="0" width="60" height="250" fill="#495057"></rect>
+      <line x1="0" y1="175" x2="1000" y2="175" stroke="#f8f9fa" stroke-width="2" stroke-dasharray="18 14"></line>
+
+      @for (dibujo of dibujos; track dibujo.id) {
+        <!-- linea de alto -->
+        <rect [attr.x]="dibujo.stopX" y="140" width="5" height="70" fill="#f8f9fa"></rect>
+        <!-- poste y caja del semaforo -->
+        <line [attr.x1]="dibujo.centroX" y1="96" [attr.x2]="dibujo.centroX" y2="140" stroke="#212529" stroke-width="5"></line>
+        <rect [attr.x]="dibujo.centroX - 15" y="26" width="30" height="74" rx="6" fill="#212529"></rect>
+        <circle [attr.cx]="dibujo.centroX" cy="43" r="9" [attr.fill]="colorFoco(dibujo.id, 'rojo')"></circle>
+        <circle [attr.cx]="dibujo.centroX" cy="63" r="9" [attr.fill]="colorFoco(dibujo.id, 'amarillo')"></circle>
+        <circle [attr.cx]="dibujo.centroX" cy="83" r="9" [attr.fill]="colorFoco(dibujo.id, 'verde')"></circle>
+        <text [attr.x]="dibujo.centroX" y="16" text-anchor="middle" font-size="14" fill="currentColor">{{ dibujo.id }}</text>
+        <!-- etiqueta con estado y nivel, fuera de la calle transversal para que se lea -->
+        <text [attr.x]="dibujo.centroX - 60" y="238" text-anchor="middle" font-size="13" fill="currentColor">{{ etiqueta(dibujo.id) }}</text>
+      }
+
+      <!-- autos: rectangulos que avanzan de izquierda a derecha -->
+      @for (auto of autos; track $index) {
+        <rect [attr.x]="auto.x - 26" y="152" width="26" height="14" rx="3" [attr.fill]="auto.color"></rect>
+      }
+    </svg>
+    <small class="text-muted">
+      Los autos se detienen en la linea de alto cuando su semaforo esta en rojo o amarillo,
+      y pasan con precaucion cuando hay amarillo intermitente. Con la sincronizacion activa,
+      el verde del semaforo 2 se enciende con el desfase configurado para formar la ola verde.
+    </small>
+  </div>
+</div>

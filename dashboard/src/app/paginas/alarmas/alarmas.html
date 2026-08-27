@@ -1,0 +1,103 @@
+<h4 class="mb-3">Alarmas y notificaciones</h4>
+
+<div class="row g-3">
+  <div class="col-lg-5">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ editandoId ? 'Editar alarma' : 'Nueva alarma' }}</h5>
+        <div class="mb-2">
+          <label class="form-label" for="nombre-alarma">Nombre</label>
+          <input id="nombre-alarma" type="text" class="form-control" [(ngModel)]="formulario.nombre" placeholder="Ej. Congestionamiento detectado">
+        </div>
+        <div class="mb-2">
+          <label class="form-label" for="variable-alarma">Variable</label>
+          <select id="variable-alarma" class="form-select" [(ngModel)]="formulario.variable">
+            @for (variable of variables; track variable.clave) {
+              <option [value]="variable.clave">{{ variable.etiqueta }}</option>
+            }
+          </select>
+        </div>
+        <div class="row g-2 mb-2">
+          <div class="col-5">
+            <label class="form-label" for="condicion-alarma">Condicion</label>
+            <select id="condicion-alarma" class="form-select" [(ngModel)]="formulario.condicion">
+              @for (condicion of condiciones; track condicion) {
+                <option [value]="condicion">{{ condicion }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-7">
+            <label class="form-label" for="umbral-alarma">Umbral</label>
+            <input id="umbral-alarma" type="number" class="form-control" [(ngModel)]="formulario.umbral">
+          </div>
+        </div>
+        <div class="form-check form-switch mb-3">
+          <input class="form-check-input" type="checkbox" role="switch" id="activa-alarma" [(ngModel)]="formulario.activa">
+          <label class="form-check-label" for="activa-alarma">Activa</label>
+        </div>
+        <button class="btn btn-primary me-2" (click)="guardar()">{{ editandoId ? 'Guardar cambios' : 'Crear alarma' }}</button>
+        @if (editandoId) {
+          <button class="btn btn-outline-secondary" (click)="cancelar()">Cancelar</button>
+        }
+        @if (mensaje) {
+          <div class="alert alert-light border py-2 mt-3 mb-0" role="status">{{ mensaje }}</div>
+        }
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Alarmas definidas</h5>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead><tr><th>Nombre</th><th>Regla</th><th>Activa</th><th></th></tr></thead>
+            <tbody>
+              @for (alarma of alarmas; track alarma._id) {
+                <tr>
+                  <td>{{ alarma.nombre }}<br><small class="text-muted">{{ etiquetaVariable(alarma.variable) }}</small></td>
+                  <td><code>{{ alarma.variable }} {{ alarma.condicion }} {{ alarma.umbral }}</code></td>
+                  <td>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" role="switch" [checked]="alarma.activa" (change)="alternarActiva(alarma)">
+                    </div>
+                  </td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-outline-primary me-1" (click)="editar(alarma)">Editar</button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="eliminar(alarma)">Eliminar</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Historial de notificaciones</h5>
+        @if (notificaciones.length === 0) {
+          <p class="text-muted mb-0">Todavia no se ha disparado ninguna alarma.</p>
+        } @else {
+          <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+              <thead><tr><th>Hora</th><th>Semaforo o sensor</th><th>Valor</th><th>Mensaje</th></tr></thead>
+              <tbody>
+                @for (notificacion of notificaciones; track $index) {
+                  <tr>
+                    <td>{{ notificacion.ts | date:'HH:mm:ss' }}</td>
+                    <td>{{ notificacion.semaforoId || '--' }}</td>
+                    <td>{{ notificacion.valor }}</td>
+                    <td>{{ notificacion.mensaje }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+/* Estilos globales del dashboard */
+
+/* La barra de navegacion es fija; al saltar a una seccion por ancla se deja
+   espacio para que el titulo no quede oculto debajo de la barra */
+section {
+  scroll-margin-top: 70px;
+}
+
+html {
+  scroll-behavior: smooth;
+}

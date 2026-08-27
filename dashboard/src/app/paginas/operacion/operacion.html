@@ -1,0 +1,74 @@
+<h4 class="mb-3">Operacion manual</h4>
+
+<div class="row g-3 mb-4">
+  @for (id of idsSemaforos(); track id) {
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title d-flex justify-content-between align-items-center">
+            {{ id }}
+            <span class="badge" [class]="claseEstado(general.semaforos[id].estado)">{{ etiquetaEstado(general.semaforos[id].estado) }}</span>
+          </h5>
+          <div class="form-check form-switch mb-3">
+            <input class="form-check-input" type="checkbox" role="switch" id="manual-{{ id }}"
+              [checked]="general.semaforos[id].modoManual" [disabled]="enviando[id]"
+              (click)="$event.preventDefault(); alternarManual(id)">
+            <label class="form-check-label" for="manual-{{ id }}">Modo manual</label>
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-success me-2" [disabled]="!general.semaforos[id].modoManual || enviando[id]"
+              (click)="enviarComando(id, 'forzar_verde')">Forzar verde</button>
+            <button class="btn btn-danger" [disabled]="!general.semaforos[id].modoManual || enviando[id]"
+              (click)="enviarComando(id, 'forzar_rojo')">Forzar rojo</button>
+          </div>
+          @if (confirmaciones[id]) {
+            <div class="alert alert-light border py-2 mb-0" role="status">{{ confirmaciones[id] }}</div>
+          }
+          <small class="text-muted d-block mt-2">
+            Al forzar verde desde rojo el dispositivo pasa primero por el amarillo obligatorio.
+          </small>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Sesiones de operacion manual</h5>
+    @if (operaciones.length === 0) {
+      <p class="text-muted mb-0">Todavia no hay sesiones registradas.</p>
+    } @else {
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <thead>
+            <tr><th>Semaforo</th><th>Inicio</th><th>Fin</th><th>Acciones realizadas</th></tr>
+          </thead>
+          <tbody>
+            @for (operacion of operaciones; track $index) {
+              <tr>
+                <td>{{ operacion.semaforoId }}</td>
+                <td>{{ operacion.tsInicio | date:'HH:mm:ss' }}</td>
+                <td>
+                  @if (operacion.tsFin) {
+                    {{ operacion.tsFin | date:'HH:mm:ss' }}
+                  } @else {
+                    <span class="badge text-bg-dark">en curso</span>
+                  }
+                </td>
+                <td>
+                  @if (operacion.acciones.length === 0) {
+                    <span class="text-muted">sin acciones</span>
+                  }
+                  @for (accion of operacion.acciones; track $index) {
+                    <span class="badge text-bg-light border me-1">{{ accion.ts | date:'HH:mm:ss' }} {{ etiquetaAccion(accion.accion) }}</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,11 @@
+{
+  "sensores": [
+    { "id": "sensor1", "semaforoId": "semaforo1", "host": "127.0.0.1", "puerto": 5683 },
+    { "id": "sensor2", "semaforoId": "semaforo2", "host": "127.0.0.1", "puerto": 5684 }
+  ],
+  "semaforos": [
+    { "id": "semaforo1", "sensorId": "sensor1", "host": "127.0.0.1", "puerto": 5685 },
+    { "id": "semaforo2", "sensorId": "sensor2", "host": "127.0.0.1", "puerto": 5686 }
+  ],
+  "sincronizacion": { "maestro": "semaforo1", "esclavo": "semaforo2" }
+}

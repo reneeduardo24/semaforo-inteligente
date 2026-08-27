@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container-fluid">
+    <span class="navbar-brand">Semaforos inteligentes</span>
+    <ul class="navbar-nav flex-row flex-wrap">
+      <li class="nav-item me-3"><a class="nav-link" href="#resumen">Resumen</a></li>
+      <li class="nav-item me-3"><a class="nav-link" href="#simulacion">Simulacion</a></li>
+      <li class="nav-item me-3"><a class="nav-link" href="#operacion">Operacion manual</a></li>
+      <li class="nav-item me-3"><a class="nav-link" href="#tiempo-real">Tiempo real</a></li>
+      <li class="nav-item me-3"><a class="nav-link" href="#alarmas">Alarmas</a></li>
+      <li class="nav-item"><a class="nav-link" href="#configuracion">Configuracion</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="container-fluid py-3">
+  <section id="resumen">
+    <app-resumen></app-resumen>
+  </section>
+  <hr class="my-4">
+  <section id="simulacion">
+    <app-simulacion></app-simulacion>
+  </section>
+  <hr class="my-4">
+  <section id="operacion">
+    <app-operacion></app-operacion>
+  </section>
+  <hr class="my-4">
+  <section id="tiempo-real">
+    <app-tiempo-real></app-tiempo-real>
+  </section>
+  <hr class="my-4">
+  <section id="alarmas">
+    <app-alarmas></app-alarmas>
+  </section>
+  <hr class="my-4">
+  <section id="configuracion">
+    <app-configuracion></app-configuracion>
+  </section>
+</main>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  @for (toast of toasts; track $index) {
+    <div class="toast show mb-2" role="alert">
+      <div class="toast-header text-bg-warning">
+        <strong class="me-auto">Alarma</strong>
+        <small>{{ toast.ts | date:'HH:mm:ss' }}</small>
+        <button type="button" class="btn-close ms-2" (click)="cerrarToast(toast)"></button>
+      </div>
+      <div class="toast-body">{{ toast.mensaje }}</div>
+    </div>
+  }
+</div>

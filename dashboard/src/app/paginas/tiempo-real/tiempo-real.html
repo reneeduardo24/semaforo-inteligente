@@ -1,0 +1,20 @@
+<h4 class="mb-2">Graficacion en tiempo real</h4>
+<p class="text-muted small mb-3">
+  Las seis variables se actualizan solas con los datos que llegan por Socket.IO.
+  Las lecturas marcadas como atipicas se excluyen (omitidas: {{ atipicasOmitidas }}).
+</p>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+  @for (grafica of graficas; track grafica.clave) {
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body py-2">
+          <h6 class="card-subtitle text-muted mb-2">{{ grafica.titulo }}</h6>
+          <div style="position: relative; height: 170px;">
+            <canvas baseChart type="line" [data]="grafica.datos" [options]="grafica.opciones"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

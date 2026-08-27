@@ -1,0 +1,9 @@
+{
+  "name": "dispositivos-semaforo",
+  "version": "1.0.0",
+  "description": "Sensores de trafico y controladores de semaforo simulados (servidores CoAP)",
+  "private": true,
+  "dependencies": {
+    "coap": "^1.4.1"
+  }
+}
